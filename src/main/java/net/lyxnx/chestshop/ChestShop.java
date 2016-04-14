@@ -7,7 +7,10 @@ public class ChestShop extends JavaPlugin {
     
     @Getter
     private static ChestShop instance;
-    
+
+    @Getter
+    private ConfigWrapper config;
+
     @Override
     public void onEnable() {
         instance = this;
