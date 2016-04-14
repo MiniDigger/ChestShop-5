@@ -10,16 +10,6 @@ import java.util.HashMap;
  */
 public enum ConfigDefaults {
 
-    CURRENCIES("CURRENCIES", new HashMap<String, String>() {{
-        put("USD", "$");
-        put("GBP", "£");
-        put("EUR", "€");
-    }}),
-    CONVERSIONS("CURRENCIES.CONVERSIONS", new HashMap<String, Double>() {{
-        put("GBP", 1.41D);
-        put("EUR", 1.13D);
-        put("USD", 1D);
-    }}),
     BACKEND("BACKEND.TYPE", "sqlite"),
     BACKEND_HOSTNAME("BACKEND.HOSTNAME", "localhost"),
     BACKEND_PORT("BACKEND.PORT", "3306"),
