@@ -1,0 +1,6 @@
+name: ChestShop
+main: net.lyxnx.chestshop.ChestShop
+version: ${project.version}
+author: Lyxnx
+description: ${project.description}
+depend: [Vault]

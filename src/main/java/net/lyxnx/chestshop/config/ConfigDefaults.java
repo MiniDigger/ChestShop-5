@@ -10,6 +10,17 @@ import java.util.HashMap;
  */
 public enum ConfigDefaults {
 
+    CURRENCIES("CURRENCIES", new HashMap<String, String>() {{
+        put("USD", "$");
+        put("GBP", "£");
+        put("EUR", "€");
+    }}),
+    CURRENCY_CONVERSIONS("CURRENCIES.CONVERSIONS", new HashMap<String, Double>() {{
+        put("USD", 1D); // Conversions are to the dollar. Eg 1GBP = 1.42USD.
+        put("GBP", 1.42);
+        put("EUR", 1.13);
+    }}),
+    DEFAULT_CURRENCY("DEFAULT-CURRENCY", "USD"),
     BACKEND("BACKEND.TYPE", "sqlite"),
     BACKEND_HOSTNAME("BACKEND.HOSTNAME", "localhost"),
     BACKEND_PORT("BACKEND.PORT", "3306"),

@@ -7,7 +7,9 @@ import net.lyxnx.chestshop.storage.Backend;
 import net.lyxnx.chestshop.storage.Callback;
 import net.lyxnx.chestshop.storage.Queries;
 import net.lyxnx.chestshop.storage.Storage;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
@@ -27,6 +29,9 @@ public class ChestShop extends JavaPlugin {
 
     @Getter
     private Storage storage;
+
+    @Getter
+    private Economy economy;
 
     @Override
     public void onEnable() {
@@ -49,6 +54,11 @@ public class ChestShop extends JavaPlugin {
                 }
             }
         });
+
+        if(!setupEconomy()) {
+            getLogger().severe("Vault dependency not found. Disabling ChestShop...");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
     @Override
@@ -98,5 +108,13 @@ public class ChestShop extends JavaPlugin {
             storage = new Storage();
             state.done(true);
         }
+    }
+
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
+        }
+        return (economy != null);
     }
 }
