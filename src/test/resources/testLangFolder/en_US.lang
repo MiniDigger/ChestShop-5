@@ -1,0 +1,17 @@
+########################
+# ChestShop Lang File #
+# Lang: en_US
+# Author: MiniDigger   #
+########################
+#########
+#  lang #
+#########
+lang.load=Loaded %0% langs
+lang.could_not_load_file=Could not load langfile %0%!
+lang.load_storage=Loaded %0% keys in lang %1%
+lang.save_default=Saving default lang to %0%
+#########
+#  test #
+#########
+test.test=Just a jUnit test %0%
+test.test_vars=Just %0% a %1% bunch %2% of %3% vars %4%

@@ -1,8 +1,10 @@
 package net.lyxnx.chestshop;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.lyxnx.chestshop.config.ConfigDefaults;
 import net.lyxnx.chestshop.config.ConfigWrapper;
+import net.lyxnx.chestshop.lang.LangHandler;
 import net.lyxnx.chestshop.storage.Backend;
 import net.lyxnx.chestshop.storage.Callback;
 import net.lyxnx.chestshop.storage.Queries;
@@ -20,9 +22,12 @@ public class ChestShop extends JavaPlugin {
 
     @Getter
     private static ChestShop instance;
+    @Getter
+    @Setter
+    private static boolean unitTesting;
 
     @Getter
-    private ConfigWrapper config;
+    private ConfigWrapper chestShopConfig;
 
     @Getter
     private Backend backend;
@@ -33,21 +38,27 @@ public class ChestShop extends JavaPlugin {
     @Getter
     private Economy economy;
 
+    @Getter
+    private LangHandler lang;
+
     @Override
     public void onEnable() {
         instance = this;
 
+        lang = new LangHandler();
+        lang.enable();
+
         loadConfig();
 
         loadDatabase(result -> {
-            if(result) {
+            if (result) {
                 Statement stmt = null;
-                try(Connection conn = storage.getConnection()) {
+                try (Connection conn = storage.getConnection()) {
                     stmt = conn.createStatement();
                     stmt.executeUpdate(storage.isSqlite() ? Queries.SQLite.CREATE_ITEMS_TABLE : Queries.CREATE_ITEMS_TABLE);
                     stmt.executeUpdate(storage.isSqlite() ? Queries.SQLite.CREATE_USERS_TABLE : Queries.CREATE_USERS_TABLE);
                     stmt.close();
-                } catch(final SQLException ex) {
+                } catch (final SQLException ex) {
                     ex.printStackTrace();
                 } finally {
                     Storage.close(stmt);
@@ -55,7 +66,7 @@ public class ChestShop extends JavaPlugin {
             }
         });
 
-        if(!setupEconomy()) {
+        if (!setupEconomy()) {
             getLogger().severe("Vault dependency not found. Disabling ChestShop...");
             Bukkit.getPluginManager().disablePlugin(this);
         }
@@ -64,29 +75,30 @@ public class ChestShop extends JavaPlugin {
     @Override
     public void onDisable() {
         instance = null;
+        lang.disable();
     }
 
     private void loadConfig() {
-        config = new ConfigWrapper(this, "config.yml", "");
-        config.createNewFile("Initialising ChestShop config...", "ChestShop-5 Configuration");
+        chestShopConfig = new ConfigWrapper(this, "config.yml", "");
+        chestShopConfig.createNewFile("Initialising ChestShop config...", "ChestShop-5 Configuration");
 
-        for(final ConfigDefaults def : ConfigDefaults.values()) {
-            config.getConfig().addDefault(def.getPath().toUpperCase(), def.getDefault());
+        for (final ConfigDefaults def : ConfigDefaults.values()) {
+            chestShopConfig.getConfig().addDefault(def.getPath().toUpperCase(), def.getDefault());
         }
 
-        config.getConfig().options().copyDefaults(true);
-        config.saveConfig();
+        chestShopConfig.getConfig().options().copyDefaults(true);
+        chestShopConfig.saveConfig();
     }
 
     private void loadDatabase(final Callback<Boolean> state) {
-        backend = Backend.getBackend(config.getConfig().getString("BACKEND.TYPE"));
+        backend = Backend.getBackend(chestShopConfig.getConfig().getString("BACKEND.TYPE"));
 
         if (backend == Backend.MYSQL) {
-            final String hostname = config.getConfig().getString("BACKEND.HOSTNAME");
-            final String port = config.getConfig().getString("BACKEND.PORT");
-            final String database = config.getConfig().getString("BACKEND.DATABASE");
-            final String username = config.getConfig().getString("BACKEND.USERNAME");
-            final String password = config.getConfig().getString("BACKEND.PASSWORD");
+            final String hostname = chestShopConfig.getConfig().getString("BACKEND.HOSTNAME");
+            final String port = chestShopConfig.getConfig().getString("BACKEND.PORT");
+            final String database = chestShopConfig.getConfig().getString("BACKEND.DATABASE");
+            final String username = chestShopConfig.getConfig().getString("BACKEND.USERNAME");
+            final String password = chestShopConfig.getConfig().getString("BACKEND.PASSWORD");
 
             // Do this async to prevent the main thread being blocked.
             Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
@@ -99,7 +111,7 @@ public class ChestShop extends JavaPlugin {
                         state.done(true);
                         return;
                     }
-                } catch(final SQLException ex) {
+                } catch (final SQLException ex) {
                     ex.printStackTrace();
                 }
             });

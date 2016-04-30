@@ -15,6 +15,27 @@
         <url>https://github.com/Lyxnx/ChestShop-5</url>
     </scm>
 
+    <contributors>
+        <contributor>
+            <name>Lyxnx</name>
+            <roles>
+                <role>Founder</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>MiniDigger</name>
+            <email>admin@minidigger.me</email>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+        </contributor>
+    </contributors>
+
+    <issueManagement>
+        <system>GitHub Issue Tracker</system>
+        <url>https://github.com/Lyxnx/ChestShop-5/issues</url>
+    </issueManagement>
+
     <repositories>
         <repository>
             <id>vault-repo</id>
@@ -61,6 +82,13 @@
             <version>1.6</version>
             <type>jar</type>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

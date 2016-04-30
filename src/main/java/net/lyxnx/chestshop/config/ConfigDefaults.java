@@ -30,7 +30,7 @@ public enum ConfigDefaults {
 
     private final String path;
     private final Object def;
-    private final FileConfiguration file = ChestShop.getInstance().getConfig().getConfig();
+    private final FileConfiguration file = ChestShop.getInstance().getChestShopConfig().getConfig();
 
     ConfigDefaults(final String path, final Object def) {
         this.path = path;
