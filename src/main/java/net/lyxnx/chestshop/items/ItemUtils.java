@@ -61,6 +61,27 @@ public class ItemUtils {
         return null;
     }
 
+    public Item getItem(final int id) {
+        Item item = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try (Connection conn = ChestShop.getInstance().getStorage().getConnection()) {
+            ps = conn.prepareStatement("SELECT * FROM items WHERE id=?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                item = new Item(id, rs.getString("code"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Storage.close(rs, ps);
+        }
+        return item;
+    }
+
     /**
      * Returns an Item based off of its item code.
      * <p />
@@ -72,11 +93,11 @@ public class ItemUtils {
         Item item = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        try(Connection conn = ChestShop.getInstance().getStorage().getConnection()) {
+        try (Connection conn = ChestShop.getInstance().getStorage().getConnection()) {
             ps = conn.prepareStatement("SELECT * FROM items WHERE code=?;");
             ps.setString(1, code);
             rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 item = new Item(rs.getInt("id"), code);
             }
             rs.close();
@@ -105,16 +126,16 @@ public class ItemUtils {
         });
     }
 
+    private class YamlBukkit extends YamlConstructor {
+        YamlBukkit() {
+            this.yamlConstructors.put(new Tag(Tag.PREFIX + "org.bukkit.inventory.ItemStack"), yamlConstructors.get(Tag.MAP));
+        }
+    }
+
     @Data
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
     public class Item {
         private final int id;
         private final String code;
-    }
-
-    private class YamlBukkit extends YamlConstructor {
-        YamlBukkit() {
-            this.yamlConstructors.put(new Tag(Tag.PREFIX + "org.bukkit.inventory.ItemStack"), yamlConstructors.get(Tag.MAP));
-        }
     }
 }

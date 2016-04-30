@@ -7,8 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 /**
- * Class to make commands easier and so that
- * they do not have to be registered in the plugin.yml
+ * Class to make commands easier and so that they do not have to be registered in the plugin.yml
  */
 public abstract class CSCommand extends BukkitCommand {
 
