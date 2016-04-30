@@ -4,4 +4,4 @@ This is the 5th iteration of the ChestShop plugin for bukkit/spigot. This time i
 ## Partial todo list
 - Create the plugin main functions (sign listeners etc)
 - Create a better item code storage system
-- System for I18n
+- System for I18n (done)
