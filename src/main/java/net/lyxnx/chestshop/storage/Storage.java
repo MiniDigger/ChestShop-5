@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import net.lyxnx.chestshop.ChestShop;
+import net.lyxnx.chestshop.lang.Lang;
 
 import java.io.File;
 import java.sql.Connection;
@@ -68,7 +69,7 @@ public class Storage {
             sqliteConn = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
             sqliteConn.close();
         } catch(final Exception ex) {
-            ex.printStackTrace();
+            Lang.error(ex);
         }
     }
 
@@ -86,7 +87,7 @@ public class Storage {
             }
             return ds.getConnection();
         } catch(final SQLException ex) {
-            ex.printStackTrace();
+            Lang.error(ex);
             return null;
         }
     }

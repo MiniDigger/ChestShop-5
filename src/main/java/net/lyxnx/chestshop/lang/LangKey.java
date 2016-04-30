@@ -1,4 +1,5 @@
 package net.lyxnx.chestshop.lang;
+
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -20,6 +21,26 @@ public class LangKey {
 
     public String getFullName() {
         return getParentName() + "." + getName();
+    }
+
+    public static class ChestShop extends LangKeyProvider {
+        public static final String NAME = "lang";
+        public static final LangKey VAULT_NOT_FOUND = new LangKey(NAME, "vault_not_found", "Vault dependency not found. Disabling ChestShop...");
+        public static final LangKey INIT_CONFIG = new LangKey(NAME, "init_config", "Initialising ChestShop config...");
+        public static final LangKey CONFIG_SAVE_ERROR = new LangKey(NAME,"config_save_error","Error saving config to %0%");
+        public static final LangKey NO_PERMISSION = new LangKey(NAME,"no_permission","You don't have permission to execute %0%");
+
+        @Override
+        public List<LangKey> values() {
+            final List<LangKey> result = new ArrayList<>();
+
+            result.add(VAULT_NOT_FOUND);
+            result.add(INIT_CONFIG);
+            result.add(CONFIG_SAVE_ERROR);
+            result.add(NO_PERMISSION);
+
+            return result;
+        }
     }
 
     public static class Lang extends LangKeyProvider {
@@ -59,9 +80,11 @@ public class LangKey {
         }
     }
 
+    //TODO its probably better to cache this...
     public static List<LangKey> values() {
         final List<LangKey> result = new ArrayList<>();
 
+        result.addAll(new ChestShop().values());
         result.addAll(new Lang().values());
         result.addAll(new TEST().values());
 

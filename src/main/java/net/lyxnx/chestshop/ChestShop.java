@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.lyxnx.chestshop.config.ConfigDefaults;
 import net.lyxnx.chestshop.config.ConfigWrapper;
+import net.lyxnx.chestshop.lang.Lang;
 import net.lyxnx.chestshop.lang.LangHandler;
+import net.lyxnx.chestshop.lang.LangKey;
 import net.lyxnx.chestshop.storage.Backend;
 import net.lyxnx.chestshop.storage.Callback;
 import net.lyxnx.chestshop.storage.Queries;
@@ -59,7 +61,7 @@ public class ChestShop extends JavaPlugin {
                     stmt.executeUpdate(storage.isSqlite() ? Queries.SQLite.CREATE_USERS_TABLE : Queries.CREATE_USERS_TABLE);
                     stmt.close();
                 } catch (final SQLException ex) {
-                    ex.printStackTrace();
+                    Lang.error(ex);
                 } finally {
                     Storage.close(stmt);
                 }
@@ -67,7 +69,7 @@ public class ChestShop extends JavaPlugin {
         });
 
         if (!setupEconomy()) {
-            getLogger().severe("Vault dependency not found. Disabling ChestShop...");
+            getLogger().severe(Lang.translate(LangKey.ChestShop.VAULT_NOT_FOUND));
             Bukkit.getPluginManager().disablePlugin(this);
         }
     }
@@ -80,7 +82,7 @@ public class ChestShop extends JavaPlugin {
 
     private void loadConfig() {
         chestShopConfig = new ConfigWrapper(this, "config.yml", "");
-        chestShopConfig.createNewFile("Initialising ChestShop config...", "ChestShop-5 Configuration");
+        chestShopConfig.createNewFile(Lang.translate(LangKey.ChestShop.INIT_CONFIG), "ChestShop-5 Configuration");
 
         for (final ConfigDefaults def : ConfigDefaults.values()) {
             chestShopConfig.getConfig().addDefault(def.getPath().toUpperCase(), def.getDefault());
@@ -112,7 +114,7 @@ public class ChestShop extends JavaPlugin {
                         return;
                     }
                 } catch (final SQLException ex) {
-                    ex.printStackTrace();
+                    Lang.error(ex);
                 }
             });
         } else {

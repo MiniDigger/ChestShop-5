@@ -6,6 +6,7 @@ import lombok.Data;
 import net.lyxnx.chestshop.ChestShop;
 import net.lyxnx.chestshop.encoding.Base62;
 import net.lyxnx.chestshop.encoding.Base64;
+import net.lyxnx.chestshop.lang.Lang;
 import net.lyxnx.chestshop.storage.Storage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConstructor;
@@ -56,7 +57,7 @@ public class ItemUtils {
 
             return Base62.encode(i.getId());
         } catch(final Exception ex) {
-            ex.printStackTrace();
+            Lang.error(ex);
         }
         return null;
     }
@@ -75,7 +76,7 @@ public class ItemUtils {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Lang.error(e);
         } finally {
             Storage.close(rs, ps);
         }
@@ -103,7 +104,7 @@ public class ItemUtils {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Lang.error(e);
         } finally {
             Storage.close(rs, ps);
         }
@@ -119,7 +120,7 @@ public class ItemUtils {
                 ps.executeUpdate();
                 ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Lang.error(e);
             } finally {
                 Storage.close(ps);
             }

@@ -1,5 +1,7 @@
 package net.lyxnx.chestshop.commands;
 
+import net.lyxnx.chestshop.lang.Lang;
+import net.lyxnx.chestshop.lang.LangKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
@@ -22,7 +24,7 @@ public abstract class CSCommand extends BukkitCommand {
     @Override
     public boolean execute(final CommandSender sender, final String alias, final String[] args) {
         if(!sender.hasPermission(this.getPermission())) {
-            sender.sendMessage("" /* Send permission message from I18n stuff */);
+            Lang.msg(sender, LangKey.ChestShop.NO_PERMISSION, getName());
             return true;
         }
 
